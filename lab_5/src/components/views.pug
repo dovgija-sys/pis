@@ -1,0 +1,259 @@
+include mixins.pug
+
+main.page-content
+  p.app-status#app-status(role='status' aria-live='polite' hidden)
+  section.app-view.home-view#view-dashboard(data-view='dashboard' aria-labelledby='hero-title')
+    .market-strip(aria-label='Поточні ринкові індекси')
+      each market in [{name: 'S&P 500', price: '5,088.80', change: '+0.85%'}, {name: 'NASDAQ', price: '16,057.40', change: '+1.12%'}, {name: 'BTC / USD', price: '$62,450.00', change: '+3.40%'}]
+        article.market-card
+          h2.market-name= market.name
+          span.market-price= market.price
+          span.market-change= market.change
+
+    section.hero(aria-labelledby='hero-title')
+      .hero-copy
+        span.eyebrow ІНВЕСТИЦІЙНА ПЛАТФОРМА
+        h1#hero-title Розумне управління портфелями та контроль ризиків
+        p.hero-description Єдина система для аналізу активів, розрахунку складного відсотка, моніторингу Stop Loss та автоматичного пропорційного розподілу капіталу.
+        .hero-actions
+          a.button.button--primary(href='#portfolios' data-open-view='portfolios') Перейти до портфелів
+            span(aria-hidden='true') →
+          a.button.button--secondary(href='#analytics' data-open-view='editor' data-new-portfolio) Розрахунок ризиків
+      article.balance-card(aria-label='Загальний баланс активів')
+        .balance-heading Загальний баланс активів
+        .balance-amount#home-balance $45,350.00
+        .balance-growth#home-growth + $2,366.00 (+5.5%)
+        .chart-wrap
+          svg.balance-chart(viewBox='0 0 420 170' role='img' aria-label='Графік зростання балансу активів')
+            defs
+              linearGradient#chart-fill(x1='0' x2='0' y1='0' y2='1')
+                stop(offset='0%' stop-color='#398d46' stop-opacity='.16')
+                stop(offset='100%' stop-color='#398d46' stop-opacity='.03')
+            path.chart-area(d='M 8 142 C 40 131, 68 119, 95 121 S 145 131, 181 111 S 245 52, 274 38 S 320 50, 337 91 S 370 121, 391 79 S 405 37, 412 24 L 412 164 L 8 164 Z')
+            path.chart-line(d='M 8 142 C 40 131, 68 119, 95 121 S 145 131, 181 111 S 245 52, 274 38 S 320 50, 337 91 S 370 121, 391 79 S 405 37, 412 24')
+            circle.chart-point(cx='412' cy='24' r='6')
+        p.balance-caption Оновлено 1 хв тому · Авторозподіл активів
+
+    section.stats-bar(aria-label='Показники платформи')
+      each stat in [{value: '$2.4M+', label: 'Розрахованого капіталу'}, {value: '100%', label: 'Точність Stop Loss алгоритмів'}, {value: '< 0.01 сек', label: 'Швидкість авторозподілу коштів'}]
+        article.stat-item
+          strong.stat-value= stat.value
+          span.stat-label= stat.label
+
+    section.features(aria-label='Можливості платформи')
+      article.feature-card
+        .feature-top
+          span.feature-icon(aria-hidden='true')
+            svg(viewBox='0 0 24 24')
+              path(d='M5 19V11M12 19V5M19 19v-8')
+          span.feature-number 01
+        h2 Дашборд портфелів
+        p.feature-description Зручний єдиний вибір портфелів. Перегляд загальної вартості, структури та відсоткової частки акцій у режимі реального часу.
+        .feature-info.feature-info--portfolio
+          span.portfolio-swatch(aria-hidden='true')
+          .feature-info-copy
+            strong#home-feature-name Основний портфель
+            span#home-feature-value $24,500.00 (+5.3%)
+        a.feature-button(href='#portfolios' data-open-view='portfolios') Переглянути
+          span(aria-hidden='true') →
+
+      article.feature-card
+        .feature-top
+          span.feature-icon(aria-hidden='true')
+            svg(viewBox='0 0 24 24')
+              path(d='m4 16 6-6 4 4 6-8M14 6h6v6')
+          span.feature-number 02
+        h2 Аналітика та ризики
+        p.feature-description Підбір нових активів через пошук з автодоповненням. Розрахунок потенційних збитків через параметри Stop Loss.
+        .feature-info.feature-info--risk
+          strong STOP LOSS РОЗРАХУНОК:
+          span#home-risk-result -$301.50 збитку
+        a.feature-button(href='#analytics' data-open-view='editor' data-new-portfolio) Розрахувати
+          span(aria-hidden='true') →
+
+      article.feature-card
+        .feature-top
+          span.feature-icon.feature-icon--forecast(aria-hidden='true')
+            svg(viewBox='0 0 24 24')
+              circle(cx='12' cy='12' r='8')
+          span.feature-number 03
+        h2 Прогнози та бюджети
+        p.feature-description Формування прибутку за формулою складного відсотка. Автоматичний пропорційний розподіл коштів при поповненні.
+        .feature-info.feature-info--forecast
+          strong ПРОГНОЗ (5 РОКІВ):
+          span#home-forecast-result +$13,883.84 прибутку
+        a.feature-button(href='#analytics' data-open-view='editor' data-new-portfolio) Дізнатися більше
+          span(aria-hidden='true') →
+
+  section.app-view#view-portfolios(data-view='portfolios' aria-labelledby='portfolios-title' hidden)
+    .portfolio-layout
+      aside.portfolio-sidebar.panel(aria-label='Мої портфелі')
+        .section-heading.section-heading--compact
+          div
+            p.panel-kicker СПИСОК
+            h1#portfolios-title Мої портфелі
+        .portfolio-options
+          each portfolio, index in [{id: 'main', name: 'Основний портфель', balance: '$24,500.00', change: '+5.3%'}, {id: 'tech', name: 'Технологічний', balance: '$12,400.00', change: '+8.1%'}, {id: 'dividend', name: 'Дивідендний', balance: '$8,450.00', change: '+2.4%'}]
+            +portfolioButton(portfolio, index === 0)
+        button.button.button--secondary.button--full(type='button' data-open-view='editor' data-new-portfolio) + Новий портфель
+      .portfolio-detail
+        .panel.portfolio-title-card
+          div
+            p.panel-kicker ОБРАНИЙ ПОРТФЕЛЬ
+            h2#selected-portfolio-title Основний портфель
+            p.page-subtitle Перегляд структури активів та аналітики
+          .portfolio-actions
+            button.button.button--secondary(type='button' data-open-view='editor' data-edit-portfolio) Редагувати
+            button.button.button--secondary.button--danger(type='button' data-delete-portfolio) Видалити
+        article.panel.portfolio-chart-card
+          .panel-heading
+            div
+              p.panel-kicker ДИНАМІКА ВАРТОСТІ ПОРТФЕЛЯ
+              strong.portfolio-total#selected-portfolio-balance $24,500.00
+              span.positive-text#selected-portfolio-change +$1,240 (5.3% за цей час)
+            .chart-ranges(aria-label='Період графіка')
+              button(type='button' data-chart-range='1m' aria-pressed='false') 1м
+              button.is-active(type='button' data-chart-range='6m' aria-pressed='true') 6м
+              button(type='button' data-chart-range='1y' aria-pressed='false') 1р
+          .portfolio-chart
+            svg.line-chart(viewBox='0 0 760 190' role='img' aria-label='Динаміка вартості обраного портфеля')
+              path.chart-grid(d='M0 35H760 M0 82H760 M0 129H760 M0 176H760')
+              path.chart-fill#portfolio-chart-fill(d='M0 151 L110 112 L220 131 L330 65 L440 84 L550 36 L660 58 L760 19 L760 190 L0 190 Z')
+              path.chart-stroke#portfolio-chart-line(d='M0 151 L110 112 L220 131 L330 65 L440 84 L550 36 L660 58 L760 19')
+            .chart-axis
+              span Січ
+              span Лют
+              span Бер
+              span Кві
+              span Тра
+              span Чер
+              span Лип
+              span Сер
+        article.panel.allocation-card
+          .section-heading.section-heading--compact
+            div
+              p.panel-kicker СТРУКТУРА
+              h2 Частки активів у портфелі
+          .allocation-content
+            .donut-chart#allocation-chart(role='img' aria-label='Кругова діаграма структури активів')
+              span#allocation-total $24.5k
+            ul.allocation-legend#allocation-legend
+              each asset in [{symbol: 'AAPL', name: 'Apple Inc.', weight: 40, value: '$9,800.00', color: 'olive'}, {symbol: 'MSFT', name: 'Microsoft Corp.', weight: 30, value: '$7,350.00', color: 'sand'}, {symbol: 'TSLA', name: 'Tesla Inc.', weight: 20, value: '$4,900.00', color: 'green'}, {symbol: 'GOOGL', name: 'Alphabet Inc.', weight: 10, value: '$2,450.00', color: 'gray'}]
+                li.allocation-row
+                  span.allocation-color(class='allocation-color--' + asset.color)
+                  strong= asset.symbol + ' (' + asset.name + ')'
+                  span= asset.weight + '.0%'
+                  span.allocation-value= asset.value
+        button.button.button--primary.button--full(type='button' data-open-view='editor' data-edit-portfolio) Перейти до аналітики та редагувати портфель →
+
+  section.app-view#view-editor(data-view='editor' aria-labelledby='editor-title' hidden)
+    .page-heading#editor-page-heading
+      div
+        p.panel-kicker КЕРУВАННЯ АКТИВАМИ
+        h1#editor-title Створення інвестиційного портфеля
+        p.page-subtitle#editor-page-description Задайте параметри, розподіліть кошти та перевірте прогнози прибутку і ризиків.
+    .editor-grid
+      .panel.editor-form-panel
+        h2#editor-form-title Параметри портфеля та активи
+        label.form-field(for='portfolio-name')
+          span Назва портфеля
+          input#portfolio-name(type='text' value='Зелений енерго-технологічний' maxlength='48')
+        .edit-strategy#edit-strategy(hidden)
+          h3.subheading Оберіть дію з активами
+          +strategyOption('allocate', 'Поповнити кошти та пропорційно розподілити', true)
+          +strategyOption('buy', 'Докупити окрему акцію та перерозподілити бюджет')
+        .form-field#asset-search-block
+          label#asset-search-label(for='asset-search') Пошук та додавання акції
+          .search-control
+            input#asset-search(type='search' placeholder='Наприклад, NVDA' autocomplete='off' aria-describedby='asset-search-help')
+            button.button.button--secondary#add-asset(type='button') + Додати
+          small#asset-search-help Пошук за тикером або назвою компанії.
+          .suggestions#asset-suggestions(role='listbox' aria-label='Знайдені акції' hidden)
+        h3.subheading#asset-list-title Обрані активи
+        ul.asset-list#editor-assets
+          each asset in [{symbol: 'AAPL', name: 'Apple Inc.', weight: 40}, {symbol: 'TSLA', name: 'Tesla Inc.', weight: 35}, {symbol: 'NVDA', name: 'NVIDIA Corp.', weight: 25}]
+            +assetRow(asset, true)
+        .distribution-block#create-distribution
+          h3.subheading Автоматичний розподіл коштів
+          label.form-field(for='contribution')
+            span Сума поповнення, $
+            input#contribution(type='number' min='0' step='100' value='15000')
+          button.button.button--secondary#distribute-money(type='button') Розподілити пропорційно
+          p.distribution-result#distribution-result Вкажіть активи та розподіліть внесок пропорційно до їхніх часток.
+        .distribution-block.edit-allocation#edit-allocation(hidden)
+          h3.subheading Сума поповнення рахунку ($):
+          .search-control
+            input#edit-contribution(type='number' min='0' step='100' value='0' aria-label='Сума поповнення рахунку, долари')
+            button.button.button--secondary#distribute-edit(type='button') Розподілити
+          p.distribution-result#edit-distribution-result(
+            data-empty='Сума поповнення буде розподілена між акціями згідно з їхніми частками.')
+        .distribution-block.edit-buy-result#edit-buy-result(hidden)
+          h3.subheading Перерозподіл існуючого бюджету:
+          p.distribution-result#buy-distribution-result Оберіть акцію, щоб розподілити частки портфеля.
+        .editor-actions
+          button.button.button--secondary#cancel-portfolio(type='button') Передумав
+          button.button.button--primary#save-portfolio(type='button') Зберегти портфель
+        p.form-status#save-status(role='status' aria-live='polite')
+
+      .calculators
+        article.panel.calculator-card
+          .section-heading.section-heading--compact
+            div
+              p.panel-kicker ПРОГНОЗУВАННЯ
+              h2#forecast-title Складний відсоток за розподілом
+          p.helper-text#forecast-description Сума майбутнього капіталу з урахуванням початкових інвестицій та річної ставки.
+          .calculator-fields
+            label.form-field(for='annual-rate')
+              span Ставка (%)
+              input#annual-rate(type='number' min='0' max='100' step='0.1' value='14')
+            label.form-field(for='years')
+              span Років
+              input#years(type='number' min='1' max='50' step='1' value='5')
+            label.form-field(for='principal')
+              span Капітал ($)
+              input#principal(type='number' min='0' step='100' value='15000')
+          .forecast-chart
+            svg.line-chart(viewBox='0 0 760 190' role='img' aria-label='Прогноз зростання капіталу')
+              path.chart-grid(d='M0 35H760 M0 82H760 M0 129H760 M0 176H760')
+              path.chart-fill#forecast-chart-fill(d='M0 165 L190 132 L380 96 L570 57 L760 20 L760 190 L0 190 Z')
+              path.chart-stroke#forecast-chart-line(d='M0 165 L190 132 L380 96 L570 57 L760 20')
+            .chart-axis#forecast-axis
+              span Рік 1
+              span Рік 2
+              span Рік 3
+              span Рік 4
+              span Рік 5
+          .forecast-result
+            span Підсумковий капітал
+            strong#forecast-total $28,883.84
+            small#forecast-profit (+$13,883.84 прибутку)
+
+        article.panel.calculator-card.risk-card
+          .section-heading.section-heading--compact
+            div
+              p.panel-kicker КОНТРОЛЬ РИЗИКУ
+              h2#risk-title Розрахунок ризиків (Stop Loss)
+          p.helper-text#risk-description Розрахунок потенційного збитку для заданої ціни, кількості акцій та рівня Stop Loss.
+          label.form-field.risk-asset-field(for='risk-asset')
+            span Акція з обраного портфеля
+            select#risk-asset
+              option(value='TSLA' selected) TSLA — Tesla Inc.
+          .calculator-fields
+            label.form-field(for='asset-price')
+              span Ціна акції ($)
+              input#asset-price(type='number' min='0.01' step='0.01' value='210.10')
+            label.form-field(for='share-quantity')
+              span Кількість
+              input#share-quantity(type='number' min='1' step='1' value='15')
+            label.form-field(for='stop-loss')
+              span Stop Loss ($)
+              input#stop-loss(type='number' min='0.01' step='0.01' value='190.00')
+          .risk-result(aria-live='polite')
+            span ПОТЕНЦІЙНИЙ ЗБИТОК
+            strong#risk-loss -$301.50
+            small#risk-formula Розрахунок: ($210.10 − $190.00) × 15 акцій
+          .risk-warning#risk-warning
+            span.warning-icon(aria-hidden='true') !
+            div
+              strong#risk-warning-title Волатильність у межах норми
+              p#risk-warning-message Stop Loss встановлено нижче ціни купівлі.

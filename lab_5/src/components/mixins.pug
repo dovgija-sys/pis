@@ -1,0 +1,22 @@
+mixin navItem(view, label)
+  a.nav-link(href='#' + view data-view-link=view aria-current=view === 'dashboard' ? 'page' : null)= label
+
+mixin assetRow(asset, removable = false)
+  li.asset-row(data-symbol=asset.symbol data-weight=asset.weight)
+    span.asset-symbol= asset.symbol
+    span.asset-company= asset.name
+    span.asset-weight= asset.weight + '%'
+    if removable
+      button.text-button(type='button' data-remove-asset=asset.symbol aria-label='Видалити ' + asset.symbol) Видалити
+
+mixin portfolioButton(portfolio, active = false)
+  button.portfolio-option(type='button' data-select-portfolio=portfolio.id class=active ? 'is-selected' : '')
+    span.portfolio-option-name= portfolio.name
+    span.portfolio-option-balance= portfolio.balance
+    span.portfolio-option-change= portfolio.change
+
+mixin strategyOption(value, label, checked = false)
+  label.strategy-option(class=checked ? 'is-selected' : '')
+    input(type='radio' name='portfolio-strategy' value=value checked=checked)
+    span.strategy-indicator(aria-hidden='true')
+    span.strategy-label= label

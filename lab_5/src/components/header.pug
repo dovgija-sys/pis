@@ -1,0 +1,18 @@
+include mixins.pug
+
+header.site-header
+  .header-inner
+    a.brand(href='#dashboard' data-view-link='dashboard' aria-label='InvestAnalytics — на головну') InvestAnalytics
+    nav.main-nav#main-navigation(aria-label='Головна навігація')
+      +navItem('dashboard', 'Головна')
+      +navItem('portfolios', 'Мої портфелі')
+      +navItem('editor', 'Аналітика та ризики')
+    button.menu-toggle(type='button' aria-label='Відкрити меню' aria-expanded='false' aria-controls='main-navigation')
+      svg(viewBox='0 0 24 24' aria-hidden='true' focusable='false')
+        path.menu-icon-top(d='M4 7h16')
+        path.menu-icon-middle(d='M4 12h16')
+        path.menu-icon-bottom(d='M4 17h16')
+    button.user-avatar(type='button' aria-label='Профіль користувача Андрій Дмитренко' aria-expanded='false' aria-controls='profile-popover') А.Д.
+    .profile-popover#profile-popover(hidden)
+      strong Андрій Дмитренко
+      span Інвестиційний рахунок
